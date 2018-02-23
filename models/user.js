@@ -1,3 +1,6 @@
+/**
+ * Cliente de la biblioteca 
+ */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
