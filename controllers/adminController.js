@@ -1,118 +1,122 @@
-var User = require('../models/user');
+/*
+ * Controlador de cuentas de administrador
+ */
 
-function insertUser(req, res){
+var Admin = require('../models/admin');
+
+function insertAdmin(req, res){
     console.log(req.body);
 
-    let user = new User();
-    user.name = req.body.name;
-    user.lastname = req.body.lastname;
-    user.address = req.body.address;
-    user.phone = req.body.phone;
-    user.email = req.body.email;
+    let admin = new Admin();
+    admin.name = req.body.name;
+    admin.lastname = req.body.lastname;
+    admin.email = req.body.email;
+    admin.username = req.body.username;
+    admin.pass = req.body.pass;
 
-    user.save((err)=>{
+    admin.save((err)=>{
         if(err){
             return res.status(500).send({
-                message : "Error to save user"
+                message : "Error to save admin"
             });
         }else{
             return res.status(200).send({
-                message : "user was successfully created"
+                message : "admin was successfully created"
             })
         }
     });   
 }
 
-function updateUser(req, res) {
-    let id = req.params.userid;
+function updateAdmin(req, res) {
+    let id = req.params.adminid;
     let datos = req.body;
-    User.update({'_id' : id},datos,(err) => {
+    Admin.update({'_id' : id},datos,(err) => {
         if(err){
             return res.status(500).send({
                 message : "Error to update"
             });
         }
         return res.status(200).send({
-            message : "update user: " + id
+            message : "update : " + id
         });
     });
 }
 
-function deleteUser(req, res) {
-    let id = req.params.userid;
+function deleteAdmin(req, res) {
+    let id = req.params.adminid;
     
-    User.findOne({'_id' : id},(err, user) => {
+    Admin.findOne({'_id' : id},(err, admin) => {
         if(err){
             return res.status(500).send({
                 message : "Error to search by id"
             });
         }
 
-        if (!user) {
+        if (!admin) {
             return res.status(404).send({
-                message : "No found user"
+                message : "No found admin"
             });
         }
 
-        user.remove((err)=>{
+        admin.remove((err)=>{
             if (err) {
                 return res.status(500).send({
                     message : "Error to remove"
                 });
             }
             return res.status(200).send({
-                message : "user removed: " + id
+                message : "admin removed: " + id
             })
         });
     });
 }
 
 function all(req, res) {
-    User.find({},(err, users) => {
+    Admin.find({},(err, admins) => {
         if(err){
             return res.status(500).send({
                 message : "Error to search by id"
             });
         }
 
-        if (!users) {
+        if (!admins) {
             return res.status(404).send({
-                message : "No found any user"
+                message : "No found any admin"
             });
         }
 
         return res.status(200).send({
-            users
+            admins
         });
     });
 }
 
-function getUser(req, res) {
-    let id = req.params.userid;
+function getAdmin(req, res) {
+    let id = req.params.adminid;
     
-    User.findOne({'_id' : id},(err, user) => {
+    Admin.findOne({'_id' : id},(err, admin) => {
         if(err){
             return res.status(500).send({
                 message : "Error to search by id"
             });
         }
 
-        if (!user) {
+        if (!admin) {
             return res.status(404).send({
-                message : "No found user"
+                message : "No found admin"
             });
         }
 
         return res.status(200).send({
-            user
+            admin
         });
     });
 }
 
 module.exports = {
-    insertUser,
-    updateUser,
-    deleteUser,
+    insertAdmin,
+    updateAdmin,
+    deleteAdmin,
     all,
-    getUser
+    getAdmin
 }
