@@ -2,6 +2,7 @@
  * Configuración de las rutas
  */
 var express = require('express');
+
 var authorController = require('../controllers/authorController');
 var bookController = require('../controllers/bookController');
 var userController = require('../controllers/userController');
@@ -16,7 +17,7 @@ var api = express.Router();
 api.get('/',(req,res)=>{
     res.status(200).send({
         name : "API LIBRARY",
-        author : "Alan Ibarra",
+        author : "Alan Ibarra @alan_ibalop",
         version : "1.0"
     });
 });
@@ -48,7 +49,7 @@ api.get('/admin/:adminid',auth,adminController.getAdmin);
 api.post('/admin',auth,adminController.insertAdmin);
 api.put('/admin/:adminid',auth,adminController.updateAdmin);
 api.delete('/admin/:adminid',auth,adminController.deleteAdmin);
-
+api.post('/admin/login',adminController.signIn);
 
 //pruebas de jwt
 api.get('/gtoken',(req, res)=>{

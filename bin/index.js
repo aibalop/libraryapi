@@ -3,8 +3,8 @@
  */
 'use strict'
 
-var config = require('./config');
-var app = require('./server');
+var config = require('../config');
+var app = require('../server');
 var mongoose = require('mongoose');
 
 mongoose.connect(config.DB,(err) => {

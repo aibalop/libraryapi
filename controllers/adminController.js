@@ -3,6 +3,7 @@
  */
 
 var Admin = require('../models/admin');
+var jwtservice = require('../services/jwt.service');
 
 function insertAdmin(req, res){
     console.log(req.body);
@@ -113,10 +114,36 @@ function getAdmin(req, res) {
     });
 }
 
+function signIn(req, res) {
+    let id = req.params.adminid;
+    
+    Admin.findOne({'username' : req.body.username,'pass' : req.body.pass},(err, admin) => {
+        if(err){
+            return res.status(500).send({
+                message : "Error al logearse"
+            });
+        }
+
+        if (!admin) {
+            return res.status(404).send({
+                message : "No existe el usuario o contraseña/usuario incorrecto"
+            });
+        }
+        
+        let token = jwtservice.createToken(admin);
+
+        return res.status(200).send({
+            mensaje : "Acceso correcto",
+            token : token
+        });
+    });
+}
+
 module.exports = {
     insertAdmin,
     updateAdmin,
     deleteAdmin,
     all,
-    getAdmin
-}
+    getAdmin,
+    signIn
+};

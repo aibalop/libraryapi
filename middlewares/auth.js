@@ -12,10 +12,10 @@ function isAuth(req, res, next){
         res.status(500).send({
             mensaje : "Acceso denegado, se necesita un token"
         });
-    }
-    let token = req.headers.authorization.split(' ')[1]; // "bearer token"
+    }else{
+        let token = req.headers.authorization.split(' ')[1]; // "bearer token"
 
-    let tokenPromise = jwtservice.decodeToken(token)
+        let tokenPromise = jwtservice.decodeToken(token)
         .then(resolve => {
             
             next();
@@ -26,6 +26,8 @@ function isAuth(req, res, next){
             });
         });
     
+    }
+        
 }
 
 
