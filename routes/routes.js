@@ -64,8 +64,10 @@ api.get('/gtoken',(req, res)=>{
     });
 });
 
-api.get('/dtoken',(req, res) => {
-    let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImliYWxvcCIsImRhdF9leHAiOm51bGx9.bgnNJbDPDaC-lGKAJvDxJDRk3j3dN7sXhqbUSIDGGH";
+api.post('/validarToken',(req, res) => {
+    
+    let token = req.body.token;
+
     let tokenPromise = jwtservice.decodeToken(token)
         .then(solve => {
             res.status(solve.status).send({
