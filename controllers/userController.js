@@ -9,6 +9,7 @@ function insertUser(req, res){
     user.address = req.body.address;
     user.phone = req.body.phone;
     user.email = req.body.email;
+    user.pass = req.body.pass;
 
     user.save((err)=>{
         if(err){

@@ -10,7 +10,8 @@ var userSchema = new Schema({
         lastname : String,
         address : String,
         phone : String,
-        email : String
+        email : String,
+        pass : String
 });
 
 module.exports = mongoose.model('User',userSchema);
