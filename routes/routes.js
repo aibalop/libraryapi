@@ -39,7 +39,7 @@ api.delete('/book/:bookid',auth,bookController.deleteBook);
 //users endpoints
 api.get('/users',auth,userController.all);
 api.get('/user/:userid',auth,userController.getUser);
-api.post('/user',auth,userController.insertUser);
+api.post('/user',userController.insertUser);
 api.put('/user/:userid',auth,userController.updateUser);
 api.delete('/user/:userid',auth,userController.deleteUser);
 
