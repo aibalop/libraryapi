@@ -22,7 +22,7 @@ function insertBook(req, res) {
     });
 }
 
-function updateBook(req, res) { 
+function updateBook(req, res) {
     let id = req.params.bookid;
     let data = req.body;
 
@@ -41,7 +41,7 @@ function updateBook(req, res) {
 
 function deleteBook(req, res) {
     let id = req.params.bookid;
-    
+
     Book.findOne({"_id" : id},(err, book)=>{
         if (err) {
             return res.status(500).send({
@@ -69,15 +69,30 @@ function deleteBook(req, res) {
     });
 }
 
-function getBook(req, res) {
-    let id = req.params.bookid;
-    Book.find({"_id" : id},(err , book)=>{
+function getBookLike(req, res) {
+    let patron = " " + req.params.patron;
+    Book.find({"title" : { $regex: /patron/ , $options : 'i' } },(err , book)=>{
         if (err) {
             return res.status(500).send({
                 message : "Error to found book"
-            }); 
+            });
         }
-    
+
+        return res.status(200).send({
+            book
+        });
+    });
+}
+
+function getBook(req, res) {
+    let id = req.params.bookid;
+    Book.findOne({"_id" : id},(err , book)=>{
+        if (err) {
+            return res.status(500).send({
+                message : "Error to found book"
+            });
+        }
+
         return res.status(200).send({
             book
         });
@@ -89,9 +104,9 @@ function all(req, res) {
         if (err) {
             return res.status(500).send({
                 message : "Error to found books"
-            }); 
+            });
         }
-    
+
         return res.status(200).send({
             books
         });
@@ -104,5 +119,6 @@ module.exports = {
     updateBook,
     deleteBook,
     getBook,
+    getBookLike,
     all
 }

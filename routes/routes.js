@@ -32,6 +32,7 @@ api.delete('/author/:authorid',auth,authorController.deleteAuthor);
 //books endpoints
 api.get('/books',auth,bookController.all);
 api.get('/book/:bookid',auth,bookController.getBook);
+api.get('/book/name/:patron',auth,bookController.getBookLike);
 api.post('/book',auth,bookController.insertBook);
 api.put('/book/:bookid',auth,bookController.updateBook);
 api.delete('/book/:bookid',auth,bookController.deleteBook);
@@ -42,6 +43,7 @@ api.get('/user/:userid',auth,userController.getUser);
 api.post('/user',userController.insertUser);
 api.put('/user/:userid',auth,userController.updateUser);
 api.delete('/user/:userid',auth,userController.deleteUser);
+api.post('/user/login',userController.signIn);
 
 //admin endpoints
 api.get('/admins',auth,adminController.all);
@@ -65,7 +67,7 @@ api.get('/gtoken',(req, res)=>{
 });
 
 api.post('/validarToken',(req, res) => {
-    
+
     let token = req.body.token;
 
     let tokenPromise = jwtservice.decodeToken(token)

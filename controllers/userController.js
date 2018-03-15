@@ -1,4 +1,5 @@
 var User = require('../models/user');
+var jwtservice = require('../services/jwt.service');
 
 function insertUser(req, res){
     console.log(req.body);
@@ -17,11 +18,42 @@ function insertUser(req, res){
                 message : "Error to save user"
             });
         }else{
+            let payload = {
+              _id : user._id,
+              name : user.name + user.lastname,
+              email : user.email
+            };
+            let token = jwtservice.createToken(payload);
             return res.status(200).send({
-                message : "user was successfully created"
+                message : "user was successfully created",
+                token : token
             })
         }
-    });   
+    });
+}
+
+function signIn(req, res) {
+
+    User.findOne({'email' : req.body.email,'pass' : req.body.pass},(err, user) => {
+        if(err){
+            return res.status(500).send({
+                message : "Error al logearse"
+            });
+        }
+
+        if (!user) {
+            return res.status(404).send({
+                message : "No existe el usuario o contraseña/usuario incorrecto"
+            });
+        }
+
+        let token = jwtservice.createToken(user);
+
+        return res.status(200).send({
+            mensaje : "Acceso correcto",
+            token : token
+        });
+    });
 }
 
 function updateUser(req, res) {
@@ -41,7 +73,7 @@ function updateUser(req, res) {
 
 function deleteUser(req, res) {
     let id = req.params.userid;
-    
+
     User.findOne({'_id' : id},(err, user) => {
         if(err){
             return res.status(500).send({
@@ -90,7 +122,7 @@ function all(req, res) {
 
 function getUser(req, res) {
     let id = req.params.userid;
-    
+
     User.findOne({'_id' : id},(err, user) => {
         if(err){
             return res.status(500).send({
@@ -115,5 +147,6 @@ module.exports = {
     updateUser,
     deleteUser,
     all,
-    getUser
+    getUser,
+    signIn
 }
