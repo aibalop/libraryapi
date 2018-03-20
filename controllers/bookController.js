@@ -70,8 +70,8 @@ function deleteBook(req, res) {
 }
 
 function getBookLike(req, res) {
-    let patron = " " + req.params.patron;
-    Book.find({"title" : { $regex: /patron/ , $options : 'i' } },(err , book)=>{
+    let patron = req.params.patron;
+    Book.find({ title : {$regex: patron , $options:"i"}},(err , book)=>{
         if (err) {
             return res.status(500).send({
                 message : "Error to found book"
